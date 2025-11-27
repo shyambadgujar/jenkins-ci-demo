@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "===== BUILD STAGE ====="
-                sh 'javac src/Main.java'
+                bat 'javac src\\Main.java'
                 echo "Build completed successfully."
             }
         }
@@ -18,7 +18,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo "===== TEST STAGE ====="
-                sh 'java -cp src Main'
+                bat 'java -cp src Main'
                 echo "Test execution completed."
             }
         }
@@ -26,10 +26,10 @@ pipeline {
         stage('Package') {
             steps {
                 echo "===== PACKAGE STAGE ====="
-                sh '''
-                    mkdir -p build
-                    cd src
-                    jar cfe ../build/app.jar Main Main.class
+                bat '''
+                if not exist build mkdir build
+                cd src
+                jar cfe ..\\build\\app.jar Main Main.class
                 '''
                 echo "Application packaged as build/app.jar"
             }
@@ -38,9 +38,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "===== DEPLOY STAGE ====="
-                sh '''
-                    mkdir -p deploy
-                    cp build/app.jar deploy/
+                bat '''
+                if not exist deploy mkdir deploy
+                copy build\\app.jar deploy\\app.jar /Y
                 '''
                 echo "Application deployed (copied) to deploy folder."
             }
