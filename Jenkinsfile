@@ -8,28 +8,29 @@ pipeline {
     stages {
 
         stage('Build') {
-            steps {
-                echo "===== BUILD STAGE (MAVEN CLEAN & COMPILE) ====="
-                bat 'mvn clean compile'
-                echo "Maven build (compile) completed successfully."
-            }
-        }
+    steps {
+        echo "===== BUILD STAGE (MAVEN CLEAN & COMPILE) ====="
+        bat '"C:\\Users\\badgu\\Downloads\\apache-maven-3.9.11-bin\\apache-maven-3.9.11\\bin\\mvn.cmd" clean compile'
+        echo "Maven build (compile) completed successfully."
+    }
+}
 
-        stage('Test') {
-            steps {
-                echo "===== TEST STAGE (MAVEN TEST) ====="
-                bat 'mvn test'
-                echo "Maven tests executed successfully."
-            }
-        }
+stage('Test') {
+    steps {
+        echo "===== TEST STAGE (MAVEN TEST) ====="
+        bat '"C:\\Users\\badgu\\Downloads\\apache-maven-3.9.11-bin\\apache-maven-3.9.11\\bin\\mvn.cmd" test'
+        echo "Maven tests executed successfully."
+    }
+}
 
-        stage('Package') {
-            steps {
-                echo "===== PACKAGE STAGE (MAVEN PACKAGE) ====="
-                bat 'mvn package'
-                echo "Maven package completed. JAR created in target/ folder."
-            }
-        }
+stage('Package') {
+    steps {
+        echo "===== PACKAGE STAGE (MAVEN PACKAGE) ====="
+        bat '"C:\\Users\\badgu\\Downloads\\apache-maven-3.9.11-bin\\apache-maven-3.9.11\\bin\\mvn.cmd" package'
+        echo "Maven package completed. JAR created in target/ folder."
+    }
+}
+
 
         stage('Deploy') {
             steps {
