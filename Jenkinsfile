@@ -36,15 +36,16 @@ pipeline {
 
 
         stage('Deploy') {
-            steps {
-                echo "===== DEPLOY STAGE ====="
-                bat '''
-                if not exist deploy mkdir deploy
-                copy build\\app.jar deploy\\app.jar /Y
-                '''
-                echo "Application deployed (copied) to deploy folder."
-            }
-        }
+    steps {
+        echo "===== DEPLOY STAGE ====="
+        bat '''
+        if not exist deploy mkdir deploy
+        copy build\\app.zip deploy\\app.zip /Y
+        '''
+        echo "Application deployed (copied) to deploy folder."
+    }
+}
+
     }
 
     post {
