@@ -24,16 +24,16 @@ pipeline {
         }
 
         stage('Package') {
-            steps {
-                echo "===== PACKAGE STAGE ====="
-                bat '''
-                if not exist build mkdir build
-                cd src
-                jar cfe ..\\build\\app.jar Main Main.class
-                '''
-                echo "Application packaged as build/app.jar"
-            }
-        }
+    steps {
+        echo "===== PACKAGE STAGE ====="
+        bat '''
+        if not exist build mkdir build
+        powershell -command "Compress-Archive -Path src\\Main.class -DestinationPath build\\app.zip -Force"
+        '''
+        echo "Application packaged as build/app.zip"
+    }
+}
+
 
         stage('Deploy') {
             steps {
