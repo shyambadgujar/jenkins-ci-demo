@@ -9,51 +9,46 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "===== BUILD STAGE ====="
-                bat 'javac src\\Main.java'
-                echo "Build completed successfully."
+                echo "===== BUILD STAGE (MAVEN CLEAN & COMPILE) ====="
+                bat 'mvn clean compile'
+                echo "Maven build (compile) completed successfully."
             }
         }
 
         stage('Test') {
             steps {
-                echo "===== TEST STAGE ====="
-                bat 'java -cp src Main'
-                echo "Test execution completed."
+                echo "===== TEST STAGE (MAVEN TEST) ====="
+                bat 'mvn test'
+                echo "Maven tests executed successfully."
             }
         }
 
         stage('Package') {
-    steps {
-        echo "===== PACKAGE STAGE ====="
-        bat '''
-        if not exist build mkdir build
-        powershell -command "Compress-Archive -Path src\\Main.class -DestinationPath build\\app.zip -Force"
-        '''
-        echo "Application packaged as build/app.zip"
-    }
-}
-
+            steps {
+                echo "===== PACKAGE STAGE (MAVEN PACKAGE) ====="
+                bat 'mvn package'
+                echo "Maven package completed. JAR created in target/ folder."
+            }
+        }
 
         stage('Deploy') {
-    steps {
-        echo "===== DEPLOY STAGE ====="
-        bat '''
-        if not exist deploy mkdir deploy
-        copy build\\app.zip deploy\\app.zip /Y
-        '''
-        echo "Application deployed (copied) to deploy folder."
-    }
-}
-
+            steps {
+                echo "===== DEPLOY STAGE (COPY JAR TO DEPLOY FOLDER) ====="
+                bat '''
+                if not exist deploy mkdir deploy
+                copy target\\jenkins-ci-demo-1.0-SNAPSHOT.jar deploy\\app.jar /Y
+                '''
+                echo "Application JAR deployed (copied) to deploy/app.jar"
+            }
+        }
     }
 
     post {
         success {
-            echo "PIPELINE SUCCESSFUL!"
+            echo "PIPELINE SUCCESSFUL WITH MAVEN!"
         }
         failure {
-            echo "PIPELINE FAILED!"
+            echo "PIPELINE FAILED. Check Maven logs above."
         }
     }
 }
